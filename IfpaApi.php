@@ -10,7 +10,7 @@ namespace Ifpa\WpprBundle\Helpers;
  * API for ranking, player, and event information.
  *
  * API Documentation: http://www.ifpapinball.com/api/documentation/
- * Github:
+ * Github: https://github.com/heyrocker/IfpaApi
  *
  * @todo Caching (maybe? better to leave it to the source app?)
  * @todo Make proper PSR vendor library for easier distribution
