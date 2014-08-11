@@ -14,7 +14,11 @@ and run
 
 		php composer.phar update
 
-and everything will get installed.
+and everything will get installed. You will then need to
+
+		use Ifpa/IfpaApi
+
+in any code where you use the API.
 
 If you're confused by this new-fangled stuff you can always just drop the PHP file somewhere and include it.
 
