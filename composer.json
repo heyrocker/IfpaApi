@@ -1,0 +1,27 @@
+{
+    "name": "heyrocker/ifpaapi",
+    "type": "library",
+    "description": "Wrapper library for accessing the IFPA API",
+    "keywords": ["pinball"],
+    "homepage": "https://github.com/heyrocker/IfpaApi",
+    "license": "Unlicense",
+    "authors": [
+        {
+            "name": "Greg Dunlap",
+            "email": "gdd@heyrocker.com",
+            "homepage": "http://heyrocker.com",
+            "role": "Nerd"
+        },
+    ],
+    "support": {
+        "forum": "https://github.com/heyrocker/IfpaApi"
+    },
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+	      "files" : [
+	          "lib/IfpaApi/php"
+	      ]
+    },
+}
