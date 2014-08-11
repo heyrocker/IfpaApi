@@ -1,7 +1,6 @@
 <?php
 
-// Fix this
-namespace Ifpa\WpprBundle\Helpers;
+namespace Ifpa;
 
 /**
  * Wrapper class for accessing the IFPA API.
