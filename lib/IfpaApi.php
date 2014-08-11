@@ -12,8 +12,6 @@ namespace Ifpa;
  * Github: https://github.com/heyrocker/IfpaApi
  *
  * @todo Caching (maybe? better to leave it to the source app?)
- * @todo Make proper PSR vendor library for easier distribution
- * @todo Composer blah blah blah
  */
 class IfpaApi {
 
