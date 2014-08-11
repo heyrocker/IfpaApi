@@ -21,7 +21,7 @@
     },
     "autoload": {
 	      "files" : [
-	          "lib/IfpaApi/php"
+	          "lib/IfpaApi.php"
 	      ]
     }
 }
