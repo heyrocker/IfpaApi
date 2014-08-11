@@ -11,7 +11,7 @@
             "email": "gdd@heyrocker.com",
             "homepage": "http://heyrocker.com",
             "role": "Nerd"
-        },
+        }
     ],
     "support": {
         "forum": "https://github.com/heyrocker/IfpaApi"
@@ -23,5 +23,5 @@
 	      "files" : [
 	          "lib/IfpaApi/php"
 	      ]
-    },
+    }
 }
