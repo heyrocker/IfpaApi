@@ -13,10 +13,6 @@
             "role": "Nerd"
         },
     ],
-	 "repositories": [{
-		 "type": "vcs",
-		 "url": "https://github.com/heyrocker/IfpaApi.git"
-	 }],
     "support": {
         "forum": "https://github.com/heyrocker/IfpaApi"
     },
