@@ -2,6 +2,13 @@
 
 namespace Ifpa;
 
+use Exception;
+
+/**
+ * Thrown if the IFPA API reports an error.
+ */
+class IfpaApiException extends Exception {}
+
 /**
  * Wrapper class for accessing the IFPA API.
  *
