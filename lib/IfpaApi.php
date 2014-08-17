@@ -64,18 +64,55 @@ class IfpaApi {
    */
   public function getPlayerHistory($player_id) {
     $url = IfpaApi::BASE_URL . "player/" . $player_id . "/history?api_key=" . $this->api_key;
-    return $this->makeRequest($url);
+    $result = $this->makeRequest($url);
+    return $result;
   }
 
   /**
    * Make a request to the IFPA API.
    *
+   * @param $url
+   *   The $url to the resource being requested.
+   *
+   * @return object
+   *   Output of json_decode() on the results of the request.
+   *
+   * @throws IfpaApiException
+   *
    * @todo Use cURL when the https stuff is sorted.
    * @todo verify json
    */
   protected function makeRequest($url) {
-    $result = json_decode(file_get_contents($url));
-    return $result;
+    $output = @file_get_contents($url);
+
+    if ($output === FALSE) {
+      $message = $this->getIfpaError($http_response_header);
+      throw new IfpaApiException($message);
+    }
+
+    return json_decode($output);
   }
 
+  /**
+   * Format an error message based on the HTTP return code.
+   *
+   * @param $http_response_header
+   *   Array created by PHP with the HTTP response headers.
+   *
+   * @return string
+   */
+  private function getIfpaError($http_response_header) {
+    $messages = array(
+      '400'	=> 'A parameter is missing or is invalid',
+      '401'	=> 'Authentication failed',
+      '404'	=> 'Resource cannot be found',
+      '405'	=> 'HTTP method not allowed',
+      '429'	=> 'Rate limit exceeded',
+      '500'	=> 'Server error',
+    );
+
+    $error_code_parts = explode(' ', $http_response_header[0]);
+    $error_code = $error_code_parts[1];
+    return $messages[$error_code];
+  }
 }
