@@ -2,8 +2,6 @@
 
 namespace Ifpa;
 
-use Exception;
-
 /**
  * Thrown if the IFPA API reports an error.
  */
@@ -64,8 +62,7 @@ class IfpaApi {
    */
   public function getPlayerHistory($player_id) {
     $url = IfpaApi::BASE_URL . "player/" . $player_id . "/history?api_key=" . $this->api_key;
-    $result = $this->makeRequest($url);
-    return $result;
+    return $this->makeRequest($url);
   }
 
   /**
@@ -75,9 +72,7 @@ class IfpaApi {
    *   The $url to the resource being requested.
    *
    * @return object
-   *   Output of json_decode() on the results of the request.
-   *
-   * @throws IfpaApiException
+   *   Output of json_decode() on the results of the request, or FALSE.
    *
    * @todo Use cURL when the https stuff is sorted.
    * @todo verify json
@@ -86,8 +81,8 @@ class IfpaApi {
     $output = @file_get_contents($url);
 
     if ($output === FALSE) {
-      $message = $this->getIfpaError($http_response_header);
-      throw new IfpaApiException($message);
+      error_log($this->getIfpaError($http_response_header));
+      return FALSE;
     }
 
     return json_decode($output);
