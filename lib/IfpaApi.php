@@ -73,6 +73,12 @@ class IfpaApi {
    * @todo verify json
    */
   protected function makeRequest($url) {
+    // PHP uses the "allow_url_fopen" setting to control whether or not a
+    // file stream can open a remote URL. Many hosting providers force this to
+    // FALSE, which causes us problems. This line forces this setting to TRUE.
+    // This will be removed when the SSL cert at the IFPA site is sorted out
+    // and we can use cURL.
+    ini_set("allow_url_fopen", TRUE);
     $output = @file_get_contents($url);
 
     if ($output === FALSE) {
