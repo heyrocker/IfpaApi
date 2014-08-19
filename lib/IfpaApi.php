@@ -3,11 +3,6 @@
 namespace Ifpa;
 
 /**
- * Thrown if the IFPA API reports an error.
- */
-class IfpaApiException extends Exception {}
-
-/**
  * Wrapper class for accessing the IFPA API.
  *
  * This class was created to assist PHP developers in accessing the IFPA's
