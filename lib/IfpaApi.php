@@ -53,7 +53,8 @@ class IfpaApi {
     // IFPA returns the results in an indexed array on the object's 'calendar'
     // property. I feel its a little more useful to get an associative array
     // with the event's id as the key, so that's what I do here. It doesn't
-    // make anything harder and it makes some things easier.
+    // make anything harder and it makes some things easier. We also do the
+    // state filtering at the same time.
     if ($results->total_entries) {
       foreach ($results->calendar as $result) {
         if (!$state || ($state && $result->state == $state)) {
