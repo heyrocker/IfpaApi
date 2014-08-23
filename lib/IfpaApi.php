@@ -33,6 +33,41 @@ class IfpaApi {
   }
 
   /**
+   * Retrieve a list of all current calendar events.
+   *
+   * @param $country
+   *   The country whose events you wish to display. Defaults to 'United
+   *   States'.
+   * @param $state
+   *   The state whose events you wish to display. If specified, only this
+   *   state's results will be returned. Note that the state field for
+   *   countries outside of the US and Canada doesn't really work very well.
+   *
+   * @return stdClass
+   *   An object with the events.
+   */
+  public function getActiveCalendarEvents($country = 'United States', $state = NULL) {
+    $url = IfpaApi::BASE_URL . "calendar/active?api_key=" . $this->api_key . '&country=' . urlencode($country);
+    $results = $this->makeRequest($url);
+
+    // IFPA returns the results in an indexed array on the object's 'calendar'
+    // property. I feel its a little more useful to get an associative array
+    // with the event's id as the key, so that's what I do here. It doesn't
+    // make anything harder and it makes some things easier.
+    if ($results->total_entries) {
+      foreach ($results->calendar as $result) {
+        if (!$state || ($state && $result->state == $state)) {
+          $munged_results[$result->calendar_id] = $result;
+        }
+      }
+    }
+    $results->calendar = $munged_results;
+    $results->total_entries = count($munged_results);
+
+    return $results;
+  }
+
+  /**
    * Retrieve information for a specified player.
    *
    * @param $player_id
