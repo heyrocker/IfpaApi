@@ -33,21 +33,31 @@ class IfpaApi {
   }
 
   /**
-   * Retrieve a list of all current calendar events.
+   * Retrieve a list of calendar events.
    *
-   * @param $country
+   * @param $country string
    *   The country whose events you wish to display. Defaults to 'United
    *   States'.
-   * @param $state
+   * @param $state string
    *   The state whose events you wish to display. If specified, only this
    *   state's results will be returned. Note that the state field for
    *   countries outside of the US and Canada doesn't really work very well.
+   * @param $past bool
+   *   If set to TRUE, return past events rather than current events. Defaults
+   *   to FALSE. NOTE: Historical result sets can be very large.
    *
    * @return stdClass
    *   An object with the events.
    */
-  public function getActiveCalendarEvents($country = 'United States', $state = NULL) {
-    $url = IfpaApi::BASE_URL . "calendar/active?api_key=" . $this->api_key . '&country=' . urlencode($country);
+  public function getActiveCalendarEvents($country = 'United States', $state = NULL, $past = FALSE) {
+    // Set whether we are retrieving current or past events so we can hit
+    // the correct endpoint.
+    $type = 'active';
+    if ($past) {
+      $type = 'history';
+    }
+
+    $url = IfpaApi::BASE_URL . "calendar/" . $type . "?api_key=" . $this->api_key . '&country=' . urlencode($country);
     $results = $this->makeRequest($url);
 
     // IFPA returns the results in an indexed array on the object's 'calendar'
