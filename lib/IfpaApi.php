@@ -143,7 +143,7 @@ class IfpaApi {
    *
    * @return string
    */
-  private function getIfpaError($http_response_header) {
+  protected function getIfpaError($http_response_header) {
     $messages = array(
       '400'	=> 'A parameter is missing or is invalid',
       '401'	=> 'Authentication failed',
