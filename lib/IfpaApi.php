@@ -49,7 +49,7 @@ class IfpaApi {
    * @return stdClass
    *   An object with the events.
    */
-  public function getActiveCalendarEvents($country = 'United States', $state = NULL, $past = FALSE) {
+  public function getCalendarEvents($country = 'United States', $state = NULL, $past = FALSE) {
     // Set whether we are retrieving current or past events so we can hit
     // the correct endpoint.
     $type = 'active';
