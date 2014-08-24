@@ -71,9 +71,9 @@ class IfpaApi {
           $munged_results[$result->calendar_id] = $result;
         }
       }
+      $results->calendar = $munged_results;
+      $results->total_entries = count($munged_results);
     }
-    $results->calendar = $munged_results;
-    $results->total_entries = count($munged_results);
 
     return $results;
   }
