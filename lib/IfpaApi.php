@@ -79,6 +79,20 @@ class IfpaApi {
   }
 
   /**
+   * Retrieve player vs player information.
+   *
+   * @param $player_id
+   *   The player's unique ID.
+   *
+   * @return stdClass
+   *   An object with the player vs player information
+   */
+  public function getPlayerVsPlayer($player_id) {
+    $url = IfpaApi::BASE_URL . "player/" . $player_id . "/pvp?api_key=" . $this->api_key;
+    return $this->makeRequest($url);
+  }
+
+  /**
    * Retrieve information for a specified player.
    *
    * @param $player_id
