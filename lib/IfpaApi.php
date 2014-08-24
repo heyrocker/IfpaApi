@@ -121,6 +121,17 @@ class IfpaApi {
   }
 
   /**
+   * Retrieve list of country directors.
+   *
+   * @return stdClass
+   *   An object with all the country directors.
+   */
+  public function getCountryDirectors() {
+    $url = IfpaApi::BASE_URL . "player/country_directors?api_key=" . $this->api_key;
+    return $this->makeRequest($url);
+  }
+
+  /**
    * Make a request to the IFPA API.
    *
    * @param $url
