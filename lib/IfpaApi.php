@@ -132,6 +132,33 @@ class IfpaApi {
   }
 
   /**
+   * Search IFPA players by name.
+   *
+   * @param $name
+   *   The player's name to search. This will match any part of a player's
+   *   first or last names.
+   *
+   * @return stdClass
+   *   An object with all matching players, or FALSE if none found.
+   */
+  public function searchPlayersByName($name) {
+    return $this->searchPlayers($name, 'name');
+  }
+
+  /**
+   * Search IFPA players by email.
+   *
+   * @param $email
+   *   The player's email to search.
+   *
+   * @return stdClass
+   *   An object with all matching players, or FALSE if none found.
+   */
+  public function searchPlayersByEmail($email) {
+    return $this->searchPlayers($email, 'email');
+  }
+
+  /**
    * Make a request to the IFPA API.
    *
    * @param $url
@@ -181,5 +208,36 @@ class IfpaApi {
     $error_code_parts = explode(' ', $http_response_header[0]);
     $error_code = $error_code_parts[1];
     return $messages[$error_code];
+  }
+
+  /**
+   * Search IFPA players.
+   *
+   * @param $param
+   *   The name or email to search
+   * @param $type
+   *   Whether this is a name search or an email search
+   *
+   * @return stdClass
+   *   An object with all matching players, or FALSE if none found.
+   */
+  protected function searchPlayers($param, $type) {
+    // The player search function only works with email OR name searches, not
+    // both.
+    $fragment = '&q=';
+    if ($type == 'email') {
+      $fragment = '&email=';
+    }
+
+    $url = IfpaApi::BASE_URL . "player/search?api_key=" . $this->api_key . $fragment . $param;
+    $results = $this->makeRequest($url);
+
+    // When search results are found, the API returns an array of players in the
+    // 'search' property. When no results are found, it returns the string
+    // 'No players found'.
+    if (!is_array($results->search)) {
+      return FALSE;
+    }
+    return $results;
   }
 }
