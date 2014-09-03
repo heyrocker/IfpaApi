@@ -75,6 +75,12 @@ class IfpaApi {
       $results->total_entries = count($munged_results);
     }
 
+    // Since we have modified the results so heavily, re-encode them into the
+    // json property.
+    unset($results->json);
+    $json = json_encode($results);
+    $results->json = $json;
+
     return $results;
   }
 
@@ -183,8 +189,12 @@ class IfpaApi {
       error_log($this->getIfpaError($http_response_header));
       return FALSE;
     }
+    $results = json_decode($output);
 
-    return json_decode($output);
+    // Save the original json into the results object so that the callers can
+    // have access to it for caching or other purposes.
+    $results->json = $output;
+    return $results;
   }
 
   /**
