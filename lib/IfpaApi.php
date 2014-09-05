@@ -177,16 +177,18 @@ class IfpaApi {
    * @todo verify json
    */
   protected function makeRequest($url) {
-    // PHP uses the "allow_url_fopen" setting to control whether or not a
-    // file stream can open a remote URL. Many hosting providers force this to
-    // FALSE, which causes us problems. This line forces this setting to TRUE.
-    // This will be removed when the SSL cert at the IFPA site is sorted out
-    // and we can use cURL.
-    ini_set("allow_url_fopen", TRUE);
-    $output = @file_get_contents($url);
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'User-Agent: IfpaApi/1.0'
+    ));
+    $output = curl_exec($ch);
+    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
 
-    if ($output === FALSE) {
-      error_log($this->getIfpaError($http_response_header));
+    if (!in_array($http_status, array(200, 201, 202, 204))) {
+      error_log($this->getIfpaError($http_status));
       return FALSE;
     }
     $results = json_decode($output);
@@ -200,24 +202,22 @@ class IfpaApi {
   /**
    * Format an error message based on the HTTP return code.
    *
-   * @param $http_response_header
-   *   Array created by PHP with the HTTP response headers.
+   * @param $http_status
+   *   String. HTTP Status Code
    *
    * @return string
    */
-  protected function getIfpaError($http_response_header) {
+  protected function getIfpaError($http_status) {
     $messages = array(
-      '400'	=> 'A parameter is missing or is invalid',
-      '401'	=> 'Authentication failed',
-      '404'	=> 'Resource cannot be found',
-      '405'	=> 'HTTP method not allowed',
-      '429'	=> 'Rate limit exceeded',
-      '500'	=> 'Server error',
+      400	=> 'A parameter is missing or is invalid',
+      401	=> 'Authentication failed',
+      404	=> 'Resource cannot be found',
+      405	=> 'HTTP method not allowed',
+      429	=> 'Rate limit exceeded',
+      500	=> 'Server error',
     );
 
-    $error_code_parts = explode(' ', $http_response_header[0]);
-    $error_code = $error_code_parts[1];
-    return $messages[$error_code];
+    return $messages[$http_status];
   }
 
   /**
@@ -245,7 +245,7 @@ class IfpaApi {
     // When search results are found, the API returns an array of players in the
     // 'search' property. When no results are found, it returns the string
     // 'No players found'.
-    if (!is_array($results->search)) {
+    if (!$results || !is_array($results->search)) {
       return FALSE;
     }
     return $results;
