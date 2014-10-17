@@ -183,9 +183,15 @@ class IfpaApi {
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
       'User-Agent: IfpaApi/1.0'
     ));
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
     $output = curl_exec($ch);
     $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
+
+    if (!$output) {
+      error_log("Error communicating with the IFPA API");
+      return FALSE;
+    }
 
     if (!in_array($http_status, array(200, 201, 202, 204))) {
       error_log($this->getIfpaError($http_status));
