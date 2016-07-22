@@ -204,6 +204,12 @@ class IfpaApi {
     }
     $results = json_decode($output);
 
+    // Check malformed response. E.g. invalid JSON
+    if ($results === null) {
+      error_log("Malformed JSON response from IFPA API");
+      return FALSE;
+    }
+
     // Save the original json into the results object so that the callers can
     // have access to it for caching or other purposes.
     $results->json = $output;
